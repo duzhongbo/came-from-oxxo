@@ -48,7 +48,7 @@ var timer;
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
 // 创建媒体源
 var source = audioCtx.createMediaElementSource(myAudio);
-// 创建 analyser
+// 创建分析器 analyser
 var analyser = audioCtx.createAnalyser();
 // 媒体连接 analyser
 source.connect(analyser);
@@ -58,8 +58,10 @@ analyser.connect(audioCtx.destination);
 
 function update() {
   dataArray = new Uint8Array(analyser.fftSize);
+  // 得到频率信息，最大值255
   analyser.getByteFrequencyData(dataArray);
-  for(var j=0; j<256; j++){
+  console.log(dataArray);
+  for(var j=0; j<256; j++){// 一共256个能量柱
     dd[j].style.height = dataArray[j]+'px';
     dd[j].style.background = 'rgba('+(255-j)+','+j*2+',0,1)';
   }
