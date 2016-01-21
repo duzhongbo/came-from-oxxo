@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>音频图2</title>
+<style>
+#voiceFrequency {
+  height: 100px;
+}
+#voiceFrequency:after{
+  content:'';
+  display: inline-block;
+  height:255px;
+  width:px;
+}
+
+#voiceFrequency div {
+  display: inline-block;
+  width: 2px;
+  background: #a00;
+  margin: 0 0 0 1px;
+  vertical-align: bottom;
+}
+</style>
+</head>
+
+<body>
+
+  <audio controls autoplay id="myAudio">
+    <source src="test.mp3">
+  </audio>
+  <br/>
+  <button id="play">play</button>
+  <button id="pause">pause</button>
+  <div id="voiceFrequency"></div>
+
+</body>
+<script>
+
+for(var i=0; i<256; i++){
+  voiceFrequency.innerHTML += '<div></div>';
+}
+var dd = document.querySelectorAll('#voiceFrequency div');
+
+var timer;
+var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+var source = audioCtx.createMediaElementSource(myAudio);
+var analyser = audioCtx.createAnalyser();
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+analyser.fftSize = 2048;
+var bufferLength = analyser.frequencyBinCount;
+var dataArray = new Uint8Array(analyser.fftSize);
+analyser.getByteFrequencyData(dataArray);
+function update() {
+  console.log(dataArray);
+  dataArray = new Uint8Array(analyser.fftSize);
+  analyser.getByteFrequencyData(dataArray);
+  for(var j=0; j<256; j++){
+    dd[j].style.height = dataArray[j]+'px';
+    dd[j].style.background = 'rgba('+(255-j)+','+j*2+',0,1)';
+  }
+  timer = setTimeout(update,15);
+};
+
+pause.onclick = function(){
+  myAudio.pause();
+  clearTimeout(timer);
+};
+
+play.onclick = function(){
+  myAudio.play();
+  update();
+};
+
+update();
+
+
+
+</script>
+</html>
