@@ -44,11 +44,17 @@ for(var i=0; i<256; i++){
 var dd = document.querySelectorAll('#voiceFrequency div');
 
 var timer;
+// 创建音频上下文
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+// 创建媒体源
 var source = audioCtx.createMediaElementSource(myAudio);
+// 创建 analyser
 var analyser = audioCtx.createAnalyser();
+// 媒体连接 analyser
 source.connect(analyser);
+// analyser 连接destination
 analyser.connect(audioCtx.destination);
+
 
 analyser.fftSize = 2048;
 var bufferLength = analyser.frequencyBinCount;
