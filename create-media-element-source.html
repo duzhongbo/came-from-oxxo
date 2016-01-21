@@ -68,7 +68,7 @@ processor.onaudioprocess = function(e) {
   for (var i = 0; i < input.length; i++) {
     output[i] = input[i];
   }
-  console.log(output);// 普遍小于0.1
+  // console.log(output);// 一定小于0.9
   for(var j=0; j<128; j++){// 128*32=4096,input.lengt==4096,从4096个声音信号中找出128个显示
     dd[j].style.height = output[j*32]*100+'px';// 高度总是小于100,因为音量总是小于1,我们设置的音量其实是“放大倍数”，最高就是1倍原声，原声各个音节也有高低，这里猜测天它们也一定小于1，两个最大的1位小数相乘，结果最大为2位小数，乘以100,也一定小于100
   }
