@@ -57,8 +57,9 @@ analyser.connect(audioCtx.destination);
 
 
 function update() {
+  // analyser.fftSize为二进制数据原始缓冲区，无法直接读取写入；Uint8Array类型化缓冲区，使其可读
   dataArray = new Uint8Array(analyser.fftSize);
-  // 得到频率信息，最大值255
+  // 得到频率信息，最大值255，为什么是255？一个字节有八位数字组成,最大为11111111,这个书按二进制数就是255
   analyser.getByteFrequencyData(dataArray);
   console.log(dataArray);
   for(var j=0; j<256; j++){// 一共256个能量柱
