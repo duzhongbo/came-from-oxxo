@@ -41,12 +41,17 @@ for(var i=0; i<128; i++){
 var dd = document.querySelectorAll('#voiceFrequency div');
 // 创建音频上下文
 var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-// 创建媒体源
+// 创建媒体源（接管音频，此时如果不使用connect将无法播放）
 var source = audioCtx.createMediaElementSource(myAudio);
+// 创建声音节点
 var gainNode = audioCtx.createGain();
+// 创建声音处理器,bufferSize、numberOfInputChannels、numberOfOutputChannels
 var processor = audioCtx.createScriptProcessor(4096, 1, 1);
+// 将媒体连接到声音节点
 source.connect(gainNode);
+// 将声音节点连接到处理器
 gainNode.connect(processor);
+// 将处理器连接到最终destination
 processor.connect(audioCtx.destination);
 
 var v = 0.9;
