@@ -56,12 +56,7 @@ source.connect(analyser);
 analyser.connect(audioCtx.destination);
 
 
-analyser.fftSize = 2048;
-var bufferLength = analyser.frequencyBinCount;
-var dataArray = new Uint8Array(analyser.fftSize);
-analyser.getByteFrequencyData(dataArray);
 function update() {
-  console.log(dataArray);
   dataArray = new Uint8Array(analyser.fftSize);
   analyser.getByteFrequencyData(dataArray);
   for(var j=0; j<256; j++){
