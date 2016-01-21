@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>音频图</title>
+<style>
+#voiceFrequency {
+  height: 100px;
+}
+
+#voiceFrequency:after {
+  content: '';
+  display: inline-block;
+  height: 100px;
+  width: 1px;
+}
+
+#voiceFrequency div {
+  display: inline-block;
+  width: 1px;
+  background: #a00;
+  margin: 0 0 0 1px;
+  vertical-align: bottom;
+}
+
+</style>
+</head>
+
+<body>
+  <audio controls autoplay>
+    <source src="test.mp3">
+  </audio>
+  <span id="s"></span>
+  <div id="voiceFrequency"></div>
+</body>
+<script>
+for(var i=0; i<128; i++){
+  voiceFrequency.innerHTML += '<div></div>';
+}
+var dd = document.querySelectorAll('#voiceFrequency div');
+var audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+var myAudio = document.querySelector('audio');
+var source = audioCtx.createMediaElementSource(myAudio);
+var gainNode = audioCtx.createGain();
+var processor = audioCtx.createScriptProcessor(4096, 1, 1);
+source.connect(gainNode);
+gainNode.connect(processor);
+processor.connect(audioCtx.destination);
+
+var v = 0.9;
+gainNode.gain.value = v;
+s.innerHTML = v;
+
+
+processor.onaudioprocess = function(e) {
+  var input = e.inputBuffer.getChannelData(0);
+  var output = e.outputBuffer.getChannelData(0);
+  for (var i = 0; i < input.length; i++) {
+    output[i] = input[i];
+  }
+  for(var j=0; j<128; j++){
+    dd[j].style.height = output[j*32]*100+'px';
+  }
+};
+</script>
+</html>
